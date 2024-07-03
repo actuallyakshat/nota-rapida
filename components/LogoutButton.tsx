@@ -30,7 +30,7 @@ export default function LogoutButton() {
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction onClick={() => signOut()}>
-            Continue
+            Logout
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

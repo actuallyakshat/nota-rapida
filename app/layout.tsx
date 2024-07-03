@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/providers/theme-provider";
+import { GlobalProvider } from "@/providers/global-context";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,13 +21,15 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={`${inter.className} h-full min-h-screen`}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="light"
-            disableTransitionOnChange
-          >
-            {children}
-          </ThemeProvider>
+          <GlobalProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="light"
+              disableTransitionOnChange
+            >
+              {children}
+            </ThemeProvider>
+          </GlobalProvider>
         </body>
       </html>
     </ClerkProvider>

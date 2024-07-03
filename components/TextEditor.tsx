@@ -2,8 +2,10 @@
 // import { useCreateBlockNote } from "@blocknote/react";
 // import { BlockNoteView, Theme } from "@blocknote/mantine";
 // import "@blocknote/mantine/style.css";
+// import { useTheme } from "next-themes";
 
 // export default function TextEditor() {
+//   const { theme } = useTheme();
 //   // Creates a new editor instance.
 //   const editor = useCreateBlockNote({
 //     initialContent: [
@@ -16,7 +18,7 @@
 //   const lightTheme = {
 //     colors: {
 //       editor: {
-//         background: "#fff",
+//         background: "#f5f5f5",
 //       },
 //     },
 //   } satisfies Theme;
@@ -29,14 +31,13 @@
 //     },
 //   } satisfies Theme;
 
-//   const notesTheme = {
-//     light: darkTheme,
-//     dark: darkTheme,
-//   };
-
 //   // Renders the editor instance using a React component.
 //   return (
-//     <BlockNoteView editor={editor} className="editor" theme={notesTheme} />
+//     <BlockNoteView
+//       editor={editor}
+//       className="editor"
+//       theme={theme == "light" ? lightTheme : darkTheme}
+//     />
 //   );
 // }
 
