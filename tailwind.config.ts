@@ -26,6 +26,7 @@ const config = {
         windowBackground: "hsl(var(--window-background))",
         foreground: "hsl(var(--foreground))",
         foregroundSecondary: "hsl(var(--foreground-secondary))",
+        hover: "hsl(var(--hover))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",

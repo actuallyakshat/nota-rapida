@@ -5,7 +5,7 @@ import React from "react";
 
 export default function Dashboard() {
   return (
-    <main className="w-full h-[calc(100vh-2rem)] relative my-auto rounded-3xl bg-windowBackground overflow-hidden border shadow-lg">
+    <main className="relative my-auto h-[calc(100vh-2rem)] w-full overflow-hidden rounded-3xl bg-windowBackground shadow-lg">
       <TopBar />
       <div className="flex h-full">
         <SideBar />
