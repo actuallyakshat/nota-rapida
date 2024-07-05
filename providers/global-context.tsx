@@ -1,40 +1,37 @@
 "use client";
 import { getUserDetails } from "@/app/_actions/actions";
+import UserDetails from "@/types/User";
 import { useClerk } from "@clerk/nextjs";
 import { Folder, User } from "@prisma/client";
 import React, { useContext, useEffect } from "react";
 
 const GlobalContext = React.createContext<{
-  clientUser: User | null;
+  clientUser: UserDetails | null;
   isLoading: boolean;
   isAuthenticated: boolean;
-  selectedFolder: number;
-  setSelectedFolder: React.Dispatch<React.SetStateAction<number>>;
+  selectedFolder: string;
+  setSelectedFolder: React.Dispatch<React.SetStateAction<string>>;
 }>({
   clientUser: null,
   isLoading: true,
   isAuthenticated: false,
-  selectedFolder: 0,
+  selectedFolder: "",
   setSelectedFolder: () => {},
 });
 
 const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
   const { user } = useClerk();
-  console.log(user);
-  const [clientUser, setClientUser] = React.useState<User | null>(null);
+  const [clientUser, setClientUser] = React.useState<UserDetails | null>(null);
   const [isLoading, setIsLoading] = React.useState(true);
   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
-  const [selectedFolder, setSelectedFolder] = React.useState<number>(0);
-
-  useEffect(() => {
-    console.log(selectedFolder);
-  }, [selectedFolder]);
+  const [selectedFolder, setSelectedFolder] = React.useState<string>("");
 
   React.useEffect(() => {
     if (!user) {
       setClientUser(null);
       setIsAuthenticated(false);
       setIsLoading(false);
+      return;
     }
     const authHandler = async () => {
       try {
@@ -52,7 +49,6 @@ const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
         setIsLoading(false);
       }
     };
-    console.log(user);
     authHandler();
   }, [user]);
 

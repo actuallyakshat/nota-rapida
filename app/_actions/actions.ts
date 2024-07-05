@@ -13,8 +13,11 @@ export async function getUserDetails(
         clerkId,
       },
       include: {
-        notes: true,
-        folders: true,
+        folders: {
+          include: {
+            notes: true,
+          },
+        },
       },
     });
     if (!user) {
@@ -23,6 +26,13 @@ export async function getUserDetails(
           clerkId,
           email: email,
           name: name,
+        },
+        include: {
+          folders: {
+            include: {
+              notes: true,
+            },
+          },
         },
       });
       return { success: true, data: newUser };
