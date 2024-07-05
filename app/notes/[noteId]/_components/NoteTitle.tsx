@@ -41,7 +41,6 @@ export default function NoteTitle({ note }: { note: Note }) {
       }
     } catch (e) {
       console.log(e);
-    } finally {
       setLoading(false);
     }
   }
@@ -67,15 +66,16 @@ export default function NoteTitle({ note }: { note: Note }) {
       <div className="flex w-full items-center gap-6">
         <form
           onSubmit={async (e) => {
+            e.preventDefault();
             console.log("submitted");
             setEnableEdit(false);
             if (newTitle == note.title) return;
-            if (newTitle == "") {
+            if (newTitle.trim() == "") {
               if (ref.current) {
                 ref.current.value = note.title;
               }
+              return;
             }
-            e.preventDefault();
             await updateNoteTitleHandler(note.id, newTitle);
           }}
           className="w-full"
@@ -87,10 +87,10 @@ export default function NoteTitle({ note }: { note: Note }) {
               ref={ref}
               onChange={(e) => setNewTitle(e.target.value)}
               style={{
-                lineHeight: "1.5",
+                lineHeight: "1.1",
                 height: "auto",
               }}
-              className="max-h-full w-full bg-transparent text-4xl font-bold focus:outline-none"
+              className="max-h-full w-full bg-transparent text-2xl font-bold focus:outline-none"
             />
             <div className="flex items-center gap-2">
               <button
@@ -125,6 +125,7 @@ export default function NoteTitle({ note }: { note: Note }) {
                         e.preventDefault();
                         await handleNoteDeletion(note.id);
                       }}
+                      disabled={loading}
                     >
                       {loading ? "Deleting..." : "Delete"}
                     </AlertDialogAction>

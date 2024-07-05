@@ -86,14 +86,10 @@
   scrollbar-width: none;
 }
 
-.editor {
-  --bn-colors-editor-text: #3f3f3f;
-  --bn-colors-editor-background: red;
-  --bn-colors-menu-text: #3f3f3f;
-  --bn-colors-menu-background: red;
-  --bn-colors-tooltip-text: #3f3f3f;
-  --bn-colors-tooltip-background: #efefef;
-  --bn-colors-hovered-text: #3f3f3f;
-  --bn-colors-hovered-background: #efefef;
-  --bn-colors-selected-text: red;
+.bn-container .bn-editor {
+  padding-inline-start: 0px !important;
+}
+
+.bn-side-menu {
+  padding-right: 8px !important;
 }

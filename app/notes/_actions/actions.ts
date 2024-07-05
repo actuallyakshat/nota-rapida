@@ -1,6 +1,5 @@
 "use server";
 import prisma from "@/db";
-import { Folder, Note } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 export async function addNote({
@@ -109,6 +108,27 @@ export async function updateNoteTitle(noteId: string, title: string) {
       },
     });
     revalidatePath("/notes");
+    return { success: true, data: note, error: null };
+  } catch (e: any) {
+    console.log(e);
+    return { success: false, data: null, error: e.message };
+  }
+}
+
+export async function saveNote(noteId: string, content: string) {
+  try {
+    if (!noteId || !content) {
+      return { success: false, data: null, error: "Missing required fields" };
+    }
+    const note = await prisma.note.update({
+      where: {
+        id: noteId,
+      },
+      data: {
+        content: content,
+      },
+    });
+    // revalidatePath("/notes/" + noteId);
     return { success: true, data: note, error: null };
   } catch (e: any) {
     console.log(e);
