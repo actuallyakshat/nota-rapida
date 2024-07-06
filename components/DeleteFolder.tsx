@@ -12,7 +12,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Trash } from "lucide-react";
-import { deleteFolder } from "@/app/notes/_actions/actions";
+import { trashFolder } from "@/app/notes/_actions/actions";
 
 export default function DeleteFolder({ folderId }: { folderId: string }) {
   const [loading, setLoading] = useState(false);
@@ -21,7 +21,7 @@ export default function DeleteFolder({ folderId }: { folderId: string }) {
   async function deleteFolderHandler() {
     try {
       setLoading(true);
-      const response = await deleteFolder(folderId);
+      const response = await trashFolder(folderId, new Date());
       if (response.success) {
         console.log("Folder deleted");
         setOpen(false);

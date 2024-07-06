@@ -58,14 +58,18 @@ export async function createFolder(
   }
 }
 
-export async function deleteFolder(folderId: string) {
+export async function trashFolder(folderId: string, date: Date) {
   try {
     if (!folderId) {
       return { success: false, data: null, error: "Missing required fields" };
     }
-    const folder = await prisma.folder.delete({
+    const folder = await prisma.folder.update({
       where: {
         id: folderId,
+      },
+      data: {
+        trashed: true,
+        trashedDate: date,
       },
     });
     revalidatePath("/notes");
@@ -76,14 +80,18 @@ export async function deleteFolder(folderId: string) {
   }
 }
 
-export async function deleteNote(noteId: string) {
+export async function trashNote(noteId: string, date: Date) {
   try {
     if (!noteId) {
       return { success: false, data: null, error: "Missing required fields" };
     }
-    const note = await prisma.note.delete({
+    const note = await prisma.note.update({
       where: {
         id: noteId,
+      },
+      data: {
+        trashed: true,
+        trashedDate: date,
       },
     });
     revalidatePath("/notes");

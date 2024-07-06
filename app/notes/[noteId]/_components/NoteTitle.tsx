@@ -14,7 +14,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useRouter } from "next/navigation";
-import { deleteNote, updateNoteTitle } from "../../_actions/actions";
+import { trashNote, updateNoteTitle } from "../../_actions/actions";
 
 export default function NoteTitle({ note }: { note: Note }) {
   const [enableEdit, setEnableEdit] = React.useState(false);
@@ -33,7 +33,7 @@ export default function NoteTitle({ note }: { note: Note }) {
   async function handleNoteDeletion(noteId: string) {
     try {
       setLoading(true);
-      const response = await deleteNote(noteId);
+      const response = await trashNote(noteId, new Date());
       if (response.success) {
         router.push("/notes");
       } else {
@@ -50,6 +50,9 @@ export default function NoteTitle({ note }: { note: Note }) {
       setLoading(true);
       const response = await updateNoteTitle(noteId, title);
       if (response.success) {
+        if (ref.current) {
+          ref.current.value = title;
+        }
         setNewTitle(title);
       } else {
         console.log(response.error);
@@ -76,7 +79,11 @@ export default function NoteTitle({ note }: { note: Note }) {
               }
               return;
             }
-            await updateNoteTitleHandler(note.id, newTitle);
+            const trimmedTitle = newTitle.trim();
+            const response = await updateNoteTitleHandler(
+              note.id,
+              trimmedTitle,
+            );
           }}
           className="w-full"
         >

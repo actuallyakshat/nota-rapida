@@ -11,6 +11,7 @@ import Link from "next/link";
 import { Folder } from "lucide-react";
 import { addNote, createFolder } from "@/app/notes/_actions/actions";
 import DeleteFolder from "./DeleteFolder";
+import { useRouter } from "next/navigation";
 
 export default function SidebarFolders({
   userDetails,
@@ -36,6 +37,7 @@ export default function SidebarFolders({
   const [newNoteName, setNewNoteName] = useState("");
   const [newFolderName, setNewFolderName] = useState("");
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     if (newNoteRef.current) {
@@ -112,19 +114,24 @@ export default function SidebarFolders({
                     <form
                       onSubmit={async (e) => {
                         e.preventDefault();
-                        if (!newNoteName) {
+                        const trimmedNoteName = newNoteName.trim();
+                        if (!trimmedNoteName) {
                           console.log("Exiting...");
+                          setNewNoteName("");
                           setAddingNote(false);
                           return;
                         }
                         try {
                           setLoading(true);
                           const response = await addNote({
-                            title: newNoteName,
+                            title: trimmedNoteName,
                             folderId: folder.id,
                             clerkId: userDetails?.clerkId as string,
                             order: folder.notes.length + 1,
                           });
+                          if (response.success) {
+                            router.push(`/notes/${response.data?.id}`);
+                          }
                           console.log(response);
                         } catch (error) {
                           console.log(error);

@@ -12,10 +12,16 @@ export default async function layout({
   const user = await currentUser();
   const folders = await prisma.folder.findMany({
     where: {
-      userId: user?.id,
+      AND: {
+        trashed: false,
+        userId: user?.id,
+      },
     },
     include: {
       notes: {
+        where: {
+          trashed: false,
+        },
         select: {
           id: true,
           title: true,
@@ -33,7 +39,7 @@ export default async function layout({
         <TopBar />
         <div className="flex h-full">
           <SideBar allFolders={folders} />
-          {children}
+          <div className="flex-[3]">{children}</div>
         </div>
       </main>
     </div>
