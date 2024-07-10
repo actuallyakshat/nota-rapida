@@ -10,6 +10,9 @@ export default async function Search() {
     where: {
       userId: user?.id,
       trashed: false,
+      folder: {
+        trashed: false,
+      },
     },
     orderBy: {
       updatedAt: "desc",
@@ -18,6 +21,7 @@ export default async function Search() {
       folder: true,
     },
   });
+  console.log(allNotes);
   const recent = allNotes.slice(0, 7);
   return (
     <div className="w-full p-12">

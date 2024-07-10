@@ -35,11 +35,14 @@ export default function SearchInput({
         type="text"
         placeholder="Search notes..."
         onChange={(e) => setQuery(e.target.value)}
-        className="mt-3 w-full rounded-md bg-background px-3 py-2 text-sm font-light text-foreground shadow-sm focus:outline-none dark:bg-[#262626]"
+        className="mt-3 w-full max-w-md rounded-md bg-background px-3 py-3 text-sm font-medium text-foreground shadow-sm focus:outline-none dark:bg-[#262626]"
       />
       {filteredNotes.length > 0 && (
         <div className="mt-5">
           <ul className="flex flex-col gap-3">
+            <h4 className="text-sm font-medium text-muted-foreground">
+              {filteredNotes.length} results found
+            </h4>
             {filteredNotes.map((note) => (
               <Link href={`/notes/${note.id}`} key={note.id} className="group">
                 <div className="flex items-center justify-between">

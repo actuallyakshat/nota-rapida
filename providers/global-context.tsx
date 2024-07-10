@@ -1,5 +1,6 @@
 "use client";
 import { getUserDetails } from "@/app/_actions/actions";
+import LoadingScreen from "@/components/LoadingScreen";
 import UserDetails from "@/types/User";
 import { useClerk } from "@clerk/nextjs";
 import { Folder, User } from "@prisma/client";
@@ -54,9 +55,7 @@ const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
 
   if (isLoading) {
     return (
-      <div className="fixed z-[100] flex items-center justify-center bg-background">
-        Loading...
-      </div>
+      <LoadingScreen />
     );
   }
 

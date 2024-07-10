@@ -2,7 +2,6 @@
 import { NoteWithFolder, FolderWithNotes } from "@/types/User";
 import { Loader, Trash, Undo2 } from "lucide-react";
 import React from "react";
-
 export default function TrashOptions({
   data,
   restoreMethod,
@@ -24,7 +23,6 @@ export default function TrashOptions({
       }
     } catch (error) {
       console.log(error);
-    } finally {
       setLoading(false);
     }
   }

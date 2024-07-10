@@ -2,6 +2,8 @@ import prisma from "@/db";
 import React from "react";
 import NoteTitle from "./_components/NoteTitle";
 import TextEditor from "@/components/TextEditor";
+import { currentUser } from "@clerk/nextjs/server";
+import { RedirectToSignIn } from "@clerk/nextjs";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
@@ -14,8 +16,13 @@ function getDaysRemaining(date: Date) {
 }
 
 export default async function Note({ params }: { params: { noteId: string } }) {
+  const user = await currentUser();
+  if (!user) {
+    return RedirectToSignIn;
+  }
   const note = await prisma.note.findUnique({
     where: {
+      userId: user.id,
       id: params.noteId,
     },
   });

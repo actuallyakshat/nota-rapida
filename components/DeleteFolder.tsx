@@ -14,7 +14,13 @@ import {
 import { Trash } from "lucide-react";
 import { trashFolder } from "@/app/notes/_actions/actions";
 
-export default function DeleteFolder({ folderId }: { folderId: string }) {
+export default function DeleteFolder({
+  folderId,
+  setSelectedFolder,
+}: {
+  folderId: string;
+  setSelectedFolder: Function;
+}) {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("");
@@ -23,6 +29,7 @@ export default function DeleteFolder({ folderId }: { folderId: string }) {
       setLoading(true);
       const response = await trashFolder(folderId, new Date());
       if (response.success) {
+        setSelectedFolder("");
         console.log("Folder deleted");
         setOpen(false);
       } else {

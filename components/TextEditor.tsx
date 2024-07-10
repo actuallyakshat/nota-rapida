@@ -13,68 +13,18 @@ import { saveNote } from "@/app/notes/_actions/actions";
 const lightTheme = {
   colors: {
     editor: {
-      text: "#222222",
       background: "#f5f5f5",
+      text: "#181a1b",
     },
-    menu: {
-      text: "#222222",
-      background: "#e0e0e0",
-    },
-    tooltip: {
-      text: "#ffffff",
-      background: "#333333",
-    },
-    hovered: {
-      text: "#222222",
-      background: "#d0d0d0",
-    },
-    selected: {
-      text: "#222222",
-      background: "#c0c0c0",
-    },
-    disabled: {
-      text: "#a0a0a0",
-      background: "#e0e0e0",
-    },
-    shadow: "#b0b0b0",
-    border: "#d0d0d0",
-    sideMenu: "#f0f0f0",
   },
-  borderRadius: 4,
-  fontFamily: "Helvetica Neue, sans-serif",
 } satisfies Theme;
 
 const darkTheme = {
-  ...lightTheme,
   colors: {
-    ...lightTheme.colors,
     editor: {
-      text: "#ffffff",
       background: "#141414",
+      text: "#fff",
     },
-    menu: {
-      text: "#ffffff",
-      background: "#333333",
-    },
-    tooltip: {
-      text: "#ffffff",
-      background: "#555555",
-    },
-    hovered: {
-      text: "#ffffff",
-      background: "#444444",
-    },
-    selected: {
-      text: "#ffffff",
-      background: "#555555",
-    },
-    disabled: {
-      text: "#666666",
-      background: "#333333",
-    },
-    shadow: "#000000",
-    border: "#444444",
-    sideMenu: "#202020",
   },
 } satisfies Theme;
 

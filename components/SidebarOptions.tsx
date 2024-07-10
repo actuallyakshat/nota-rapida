@@ -67,8 +67,11 @@ export default function SidebarOptions({
   ];
   return (
     <div className="space-y-1">
-      {sidebarOption.map((option) =>
-        option.type === "button" ? (
+      {sidebarOption.map((option) => {
+        if (option.name === "Add Note" && !selectedFolder) {
+          return null;
+        }
+        return option.type === "button" ? (
           <button
             key={option.id}
             onClick={option.method}
@@ -86,9 +89,8 @@ export default function SidebarOptions({
             {option.icon}
             <p className="text-sm text-muted-foreground">{option.name}</p>
           </Link>
-        ),
-      )}
-
+        );
+      })}
       <ThemeToggler />
     </div>
   );

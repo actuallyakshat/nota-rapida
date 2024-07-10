@@ -3,6 +3,7 @@ import CurrentTime from "./CurrentTime";
 import { currentUser } from "@clerk/nextjs/server";
 import { LogOut, Power } from "lucide-react";
 import LogoutButton from "./LogoutButton";
+import Link from "next/link";
 
 export default async function TopBar() {
   const user = await currentUser();
@@ -12,7 +13,9 @@ export default async function TopBar() {
         <span className="hidden md:block">
           <CurrentTime />
         </span>
-        <h4 className="font-bold">Nota Rapida</h4>
+        <Link href={"/"} className="font-bold">
+          Nota Rapida
+        </Link>
         <div className="hidden items-center gap-3 font-light md:flex">
           {user?.fullName} <LogoutButton />
         </div>

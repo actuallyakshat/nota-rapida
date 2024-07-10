@@ -9,20 +9,12 @@ import {
   restoreNote,
 } from "../_actions/actions";
 
-function getDaysRemaining(date: Date) {
-  // 15 - days covered from given date:
-  const daysRemaining =
-    15 -
-    Math.floor((new Date().getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
-  return daysRemaining;
-}
-
 export default async function Trash() {
   const user = await currentUser();
   const trashedNotes = await prisma.note.findMany({
     where: {
       userId: user?.id,
-      trashed: true,
+      OR: [{ trashed: true }, { folder: { trashed: true } }],
     },
     orderBy: {
       trashedDate: "desc",
@@ -43,6 +35,16 @@ export default async function Trash() {
       notes: true,
     },
   });
+
+  function getDaysRemaining(date: Date) {
+    // 15 - days covered from given date:
+    const daysRemaining =
+      15 -
+      Math.floor(
+        (new Date().getTime() - date?.getTime()) / (1000 * 60 * 60 * 24),
+      );
+    return daysRemaining;
+  }
 
   return (
     <div className="w-full p-12">

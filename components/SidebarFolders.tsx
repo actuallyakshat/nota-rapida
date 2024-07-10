@@ -87,12 +87,19 @@ export default function SidebarFolders({
                     setAddingNote(false);
                     setNewNoteName("");
                     console.log(folder.id);
-                    setSelectedFolder(folder.id);
+                    if (folder.id === selectedFolder) {
+                      setSelectedFolder("");
+                    } else {
+                      setSelectedFolder(folder.id);
+                    }
                   }}
                 >
                   <span>{folder.name}</span>
                   <div onClick={(e) => e.preventDefault()} className="ml-auto">
-                    <DeleteFolder folderId={folder.id} />
+                    <DeleteFolder
+                      folderId={folder.id}
+                      setSelectedFolder={setSelectedFolder}
+                    />
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="mt-1 flex flex-col items-start justify-start gap-2">
@@ -145,6 +152,7 @@ export default function SidebarFolders({
                         value={newNoteName}
                         ref={newNoteRef}
                         disabled={loading}
+                        maxLength={30}
                         onChange={(e) => setNewNoteName(e.target.value)}
                         onBlur={(e) => {
                           e.preventDefault();
@@ -173,10 +181,10 @@ export default function SidebarFolders({
                   setAddingFolder(false);
                   return;
                 }
-                console.log(newFolderName);
-                console.log("sending request");
-                console.log(userDetails?.clerkId);
-                console.log(allFolders.length);
+                if (newFolderName.length > 20) {
+                  console.log("Folder name too long");
+                  return;
+                }
                 try {
                   setLoading(true);
                   const response = await createFolder(
@@ -199,6 +207,7 @@ export default function SidebarFolders({
                   ref={newFolderRef}
                   disabled={loading}
                   onChange={(e) => setNewFolderName(e.target.value)}
+                  maxLength={30}
                   onBlur={(e) => {
                     e.preventDefault();
                     e.target.form!.dispatchEvent(
