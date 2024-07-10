@@ -1,15 +1,67 @@
 "use client";
-import React from "react";
-export default function SearchInput() {
+import { NoteWithFolder } from "@/types/User";
+import { Note } from "@prisma/client";
+import Link from "next/link";
+import React, { useEffect } from "react";
+export default function SearchInput({
+  allNotes,
+}: {
+  allNotes: NoteWithFolder[];
+}) {
   const [query, setQuery] = React.useState("");
+  const [filteredNotes, setFilteredNotes] = React.useState<Note[]>([]);
+
+  useEffect(() => {
+    if (query.length === 0) {
+      setFilteredNotes([]);
+      return;
+    }
+    const filteredNotes = allNotes.filter(
+      (note) =>
+        note.title.toLowerCase().includes(query.toLowerCase()) ||
+        note.content.toLowerCase().includes(query.toLowerCase()) ||
+        note.folder.name.toLowerCase().includes(query.toLowerCase()),
+    );
+    console.log(filteredNotes);
+    setFilteredNotes(filteredNotes);
+  }, [query, allNotes]);
   return (
-    <div>
+    <div className="mt-10">
+      <h1 className="text-3xl font-black">Search Notes</h1>
+      <p className="text-sm text-muted-foreground">
+        Quickly search for your notes and jot your thoughts down.
+      </p>
       <input
         type="text"
         placeholder="Search notes..."
         onChange={(e) => setQuery(e.target.value)}
-        className="mt-3 w-full rounded-md bg-background px-3 py-2 text-sm font-light text-foreground focus:outline-none dark:bg-[#262626]"
+        className="mt-3 w-full rounded-md bg-background px-3 py-2 text-sm font-light text-foreground shadow-sm focus:outline-none dark:bg-[#262626]"
       />
+      {filteredNotes.length > 0 && (
+        <div className="mt-5">
+          <ul className="flex flex-col gap-3">
+            {filteredNotes.map((note) => (
+              <Link href={`/notes/${note.id}`} key={note.id} className="group">
+                <div className="flex items-center justify-between">
+                  <div className="flex flex-col">
+                    <h4 className="font-medium text-foreground group-hover:underline">
+                      {note.title}
+                    </h4>
+                    <p className="text-xs text-muted-foreground">
+                      {note.createdAt.toLocaleDateString()}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </ul>
+        </div>
+      )}
+      {query.length > 0 && filteredNotes.length === 0 && (
+        <div className="mt-3 text-sm text-muted-foreground">
+          No notes found.
+        </div>
+      )}
     </div>
   );
 }

@@ -136,8 +136,87 @@ export async function saveNote(noteId: string, content: string) {
         content: content,
       },
     });
-    // revalidatePath("/notes/" + noteId);
     return { success: true, data: note, error: null };
+  } catch (e: any) {
+    console.log(e);
+    return { success: false, data: null, error: e.message };
+  }
+}
+
+export async function restoreNote(noteId: string) {
+  try {
+    if (!noteId) {
+      return { success: false, data: null, error: "Missing required fields" };
+    }
+    const note = await prisma.note.update({
+      where: {
+        id: noteId,
+      },
+      data: {
+        trashed: false,
+        trashedDate: null,
+      },
+    });
+    revalidatePath("/notes");
+    return { success: true, data: note, error: null };
+  } catch (e: any) {
+    console.log(e);
+    return { success: false, data: null, error: e.message };
+  }
+}
+
+export async function deleteNote(noteId: string) {
+  try {
+    if (!noteId) {
+      return { success: false, data: null, error: "Missing required fields" };
+    }
+    const note = await prisma.note.delete({
+      where: {
+        id: noteId,
+      },
+    });
+    revalidatePath("/notes");
+    return { success: true, data: note, error: null };
+  } catch (e: any) {
+    console.log(e);
+    return { success: false, data: null, error: e.message };
+  }
+}
+
+export async function restoreFolder(folderId: string) {
+  try {
+    if (!folderId) {
+      return { success: false, data: null, error: "Missing required fields" };
+    }
+    const folder = await prisma.folder.update({
+      where: {
+        id: folderId,
+      },
+      data: {
+        trashed: false,
+        trashedDate: null,
+      },
+    });
+    revalidatePath("/notes");
+    return { success: true, data: folder, error: null };
+  } catch (e: any) {
+    console.log(e);
+    return { success: false, data: null, error: e.message };
+  }
+}
+
+export async function deleteFolder(folderId: string) {
+  try {
+    if (!folderId) {
+      return { success: false, data: null, error: "Missing required fields" };
+    }
+    const folder = await prisma.folder.delete({
+      where: {
+        id: folderId,
+      },
+    });
+    revalidatePath("/notes");
+    return { success: true, data: folder, error: null };
   } catch (e: any) {
     console.log(e);
     return { success: false, data: null, error: e.message };

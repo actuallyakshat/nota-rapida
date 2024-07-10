@@ -7,6 +7,9 @@ export interface FolderWithNotes extends Folder {
   }[];
 }
 
+export interface NoteWithFolder extends Note {
+  folder: Folder;
+}
 interface UserDetails extends User {
   folders: FolderWithNotes[];
 }

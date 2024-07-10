@@ -41,6 +41,7 @@ export default async function Note({ params }: { params: { noteId: string } }) {
     <div className="w-full">
       <div className="w-full px-16 py-12">
         <NoteTitle note={note} />
+        <hr className="mt-4" />
         <TextEditor note={note} />
       </div>
     </div>

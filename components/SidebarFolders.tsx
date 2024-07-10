@@ -144,6 +144,7 @@ export default function SidebarFolders({
                         type="text"
                         value={newNoteName}
                         ref={newNoteRef}
+                        disabled={loading}
                         onChange={(e) => setNewNoteName(e.target.value)}
                         onBlur={(e) => {
                           e.preventDefault();
