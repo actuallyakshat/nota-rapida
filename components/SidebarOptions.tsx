@@ -68,9 +68,6 @@ export default function SidebarOptions({
   return (
     <div className="space-y-1">
       {sidebarOption.map((option) => {
-        if (option.name === "Add Note" && !selectedFolder) {
-          return null;
-        }
         return option.type === "button" ? (
           <button
             key={option.id}

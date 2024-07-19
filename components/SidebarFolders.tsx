@@ -224,7 +224,6 @@ export default function SidebarFolders({
             </form>
           )}
         </div>
-        <div></div>
       </div>
     </div>
   );
