@@ -5,14 +5,19 @@ import {
   Accordion,
   AccordionContent,
   AccordionItem,
-  AccordionTrigger,
 } from "@/components/ui/accordion";
 import Link from "next/link";
-import { Folder, Pencil } from "lucide-react";
-import { addNote, createFolder } from "@/app/notes/_actions/actions";
-import DeleteFolder from "./DeleteFolder";
+import { Folder, GripVertical } from "lucide-react";
+import {
+  addNote,
+  createFolder,
+  updateFolderOrder,
+  updateNoteOrder,
+} from "@/app/notes/_actions/actions";
 import { useRouter } from "next/navigation";
 import FolderItem from "./FolderTitle";
+import { Reorder, useDragControls } from "framer-motion";
+import debounce from "lodash/debounce";
 
 export default function SidebarFolders({
   userDetails,
@@ -39,6 +44,8 @@ export default function SidebarFolders({
   const [newFolderName, setNewFolderName] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const [folders, setFolders] = useState(allFolders);
+  const dragControls = useDragControls();
 
   useEffect(() => {
     if (newNoteRef.current) {
@@ -58,6 +65,70 @@ export default function SidebarFolders({
     setNewFolderName("");
     setNewNoteName("");
   }, [allFolders, setAddingFolder, setAddingNote]);
+
+  useEffect(() => {
+    setFolders(allFolders);
+  }, [allFolders]);
+
+  const handleNoteReorder = async (folderId: string, reorderedNotes: any[]) => {
+    try {
+      setLoading(true);
+      console.log("reached till here");
+      const response = await updateNoteOrder(folderId, reorderedNotes);
+      if (response.success) {
+        console.log("Note order updated successfully.");
+      } else {
+        console.log("Failed to update note order:", response.error);
+        throw new Error("Failed to update note order");
+      }
+    } catch (error) {
+      console.error("Error updating note order: ", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const debouncedHandleNoteReorder = useRef(
+    debounce((folderId: string, reorderedNotes: any[]) => {
+      handleNoteReorder(folderId, reorderedNotes);
+    }, 1000),
+  ).current;
+
+  const handleLocalNoteReorder = (folderId: string, reorderedNotes: any[]) => {
+    setFolders((prevFolders) =>
+      prevFolders.map((folder) =>
+        folder.id === folderId ? { ...folder, notes: reorderedNotes } : folder,
+      ),
+    );
+    debouncedHandleNoteReorder(folderId, reorderedNotes);
+  };
+
+  const handleFolderReorder = async (reorderedFolders: FolderWithNotes[]) => {
+    try {
+      setLoading(true);
+      const response = await updateFolderOrder(reorderedFolders);
+      if (response.success) {
+        console.log("Folder order updated successfully.");
+      } else {
+        console.error("Failed to update folder order:", response.error);
+      }
+    } catch (error) {
+      console.error("Error updating folder order:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const debouncedHandleFolderReorder = useRef(
+    debounce((reorderedFolders: any[]) => {
+      handleFolderReorder(reorderedFolders);
+    }, 1000),
+  ).current;
+
+  const handleLocalFolderReorder = (reorderedFolders: any[]) => {
+    setFolders(reorderedFolders);
+    debouncedHandleFolderReorder(reorderedFolders);
+  };
 
   return (
     <div>
@@ -79,125 +150,136 @@ export default function SidebarFolders({
               Create a folder to get started.
             </p>
           )}
-          {allFolders.map((folder) => (
-            <Accordion key={folder.id} type="single" collapsible>
-              <AccordionItem value={folder.id} className="border-0">
-                {/* <AccordionTrigger
-                  className="text-muted-foreground"
-                  onClick={() => {
-                    setAddingNote(false);
-                    setNewNoteName("");
-                    console.log(folder.id);
-                    if (folder.id === selectedFolder) {
-                      setSelectedFolder("");
-                    } else {
-                      setSelectedFolder(folder.id);
-                    }
-                  }}
-                >
-                  <span>{folder.name}</span>
-                  <div
-                    onClick={(e) => e.preventDefault()}
-                    className="ml-auto flex items-center gap-2"
-                  >
-                    <button>
-                      <Pencil className="size-4 fill-muted-foreground stroke-none transition-colors hover:fill-foreground" />
-                    </button>
-                    <DeleteFolder
-                      folderId={folder.id}
+          <Reorder.Group
+            axis="y"
+            values={folders}
+            onReorder={handleLocalFolderReorder}
+          >
+            {folders.map((folder) => (
+              <Accordion key={folder.id} type="single" collapsible>
+                <Reorder.Item key={folder.id} value={folder}>
+                  <AccordionItem value={folder.id} className="border-0">
+                    <FolderItem
+                      folder={folder}
+                      selectedFolder={selectedFolder}
                       setSelectedFolder={setSelectedFolder}
+                      setAddingNote={setAddingNote}
+                      setNewNoteName={setNewNoteName}
                     />
-                  </div>
-                </AccordionTrigger> */}
-                <FolderItem
-                  folder={folder}
-                  selectedFolder={selectedFolder}
-                  setSelectedFolder={setSelectedFolder}
-                  setAddingNote={setAddingNote}
-                  setNewNoteName={setNewNoteName}
-                />
 
-                <AccordionContent className="mt-1 flex flex-col items-start justify-start gap-2">
-                  {folder.notes.map((note) => (
-                    <Link
-                      href={`/notes/${note.id}`}
-                      key={note.id}
-                      className="text-sm text-muted-foreground transition-colors hover:text-foreground hover:underline"
-                    >
-                      {note.title}
-                    </Link>
-                  ))}
-                  {folder.notes.length === 0 && !addingNote && (
-                    <div className="text-sm text-muted-foreground">
-                      No notes in this folder
-                    </div>
-                  )}
-                  {addingNote && selectedFolder == folder.id && (
-                    <form
-                      onSubmit={async (e) => {
-                        e.preventDefault();
-                        const trimmedNoteName = newNoteName.trim();
-                        if (!trimmedNoteName) {
-                          console.log("Exiting...");
-                          setNewNoteName("");
-                          setAddingNote(false);
-                          return;
+                    <AccordionContent className="mt-1">
+                      <Reorder.Group
+                        axis="y"
+                        values={folder.notes}
+                        onReorder={(newOrder) =>
+                          handleLocalNoteReorder(folder.id, newOrder)
                         }
-                        try {
-                          setLoading(true);
-                          const response = await addNote({
-                            title: trimmedNoteName,
-                            folderId: folder.id,
-                            clerkId: userDetails?.clerkId as string,
-                            order: folder.notes.length + 1,
-                          });
-                          if (response.success) {
-                            router.push(`/notes/${response.data?.id}`);
-                          }
-                          console.log(response);
-                        } catch (error) {
-                          console.log(error);
-                        } finally {
-                          setLoading(false);
-                        }
-                      }}
-                    >
-                      <input
-                        type="text"
-                        value={newNoteName}
-                        ref={newNoteRef}
-                        disabled={loading}
-                        maxLength={30}
-                        onChange={(e) => setNewNoteName(e.target.value)}
-                        onBlur={(e) => {
-                          e.preventDefault();
-                          e.target.form!.dispatchEvent(
-                            new Event("submit", {
-                              cancelable: true,
-                              bubbles: true,
-                            }),
-                          );
-                        }}
-                        className="bg-windowBackground text-sm text-muted-foreground focus:outline-none"
-                        placeholder="New Note"
-                      />
-                    </form>
-                  )}
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          ))}
+                        className="w-full space-y-2 pr-5"
+                      >
+                        {folder.notes.map((note) => (
+                          <Reorder.Item key={note.id} value={note}>
+                            <div className="flex w-full items-center justify-between gap-1">
+                              <Link
+                                href={`/notes/${note.id}`}
+                                key={note.id}
+                                className="text-sm text-muted-foreground transition-colors hover:text-foreground hover:underline"
+                              >
+                                {note.title}
+                              </Link>
+                              <div
+                                onPointerDown={(event) =>
+                                  dragControls.start(event)
+                                }
+                                className="cursor-grab active:cursor-grabbing"
+                              >
+                                <GripVertical className="size-4 fill-muted-foreground stroke-[1px]" />
+                              </div>
+                            </div>
+                          </Reorder.Item>
+                        ))}
+                      </Reorder.Group>
+
+                      {folder.notes.length === 0 && !addingNote && (
+                        <div className="text-sm text-muted-foreground">
+                          No notes in this folder
+                        </div>
+                      )}
+                      {addingNote && selectedFolder == folder.id && (
+                        <form
+                          onSubmit={async (e) => {
+                            e.preventDefault();
+                            const trimmedNoteName = newNoteName.trim();
+                            if (!trimmedNoteName) {
+                              console.log("Note name is empty. Exiting...");
+                              setNewNoteName("");
+                              setAddingNote(false);
+                              return;
+                            }
+                            try {
+                              setLoading(true);
+                              const response = await addNote({
+                                title: trimmedNoteName,
+                                folderId: folder.id,
+                                clerkId: userDetails?.clerkId as string,
+                                order: folder.notes.length + 1,
+                              });
+                              if (response.success) {
+                                console.log(
+                                  "Note added successfully:",
+                                  response,
+                                );
+                                router.push(`/notes/${response.data?.id}`);
+                              } else {
+                                console.log("Failed to add note:", response);
+                              }
+                            } catch (error) {
+                              console.error("Error adding note:", error);
+                            } finally {
+                              setLoading(false);
+                            }
+                          }}
+                        >
+                          <input
+                            type="text"
+                            value={newNoteName}
+                            ref={newNoteRef}
+                            disabled={loading}
+                            maxLength={30}
+                            onChange={(e) => setNewNoteName(e.target.value)}
+                            onBlur={(e) => {
+                              e.preventDefault();
+                              e.target.form!.dispatchEvent(
+                                new Event("submit", {
+                                  cancelable: true,
+                                  bubbles: true,
+                                }),
+                              );
+                            }}
+                            className="bg-windowBackground text-sm text-muted-foreground focus:outline-none"
+                            placeholder="New Note"
+                          />
+                        </form>
+                      )}
+                    </AccordionContent>
+                  </AccordionItem>
+                </Reorder.Item>
+              </Accordion>
+            ))}
+          </Reorder.Group>
+
           {addingFolder && (
             <form
               onSubmit={async (e) => {
                 e.preventDefault();
                 if (!newFolderName) {
-                  console.log("Exiting...");
+                  console.log("Folder name is empty. Exiting...");
                   setAddingFolder(false);
                   return;
                 }
                 if (newFolderName.length > 20) {
-                  console.log("Folder name too long");
+                  console.log(
+                    "Folder name too long. Max length is 20 characters.",
+                  );
                   return;
                 }
                 try {
@@ -205,11 +287,15 @@ export default function SidebarFolders({
                   const response = await createFolder(
                     newFolderName,
                     userDetails?.clerkId as string,
-                    allFolders.length + 1,
+                    folders.length + 1,
                   );
-                  console.log(response);
+                  if (response.success) {
+                    console.log("Folder created successfully:", response);
+                  } else {
+                    console.log("Failed to create folder:", response);
+                  }
                 } catch (error) {
-                  console.log(error);
+                  console.error("Error creating folder:", error);
                 } finally {
                   setLoading(false);
                 }
@@ -232,7 +318,7 @@ export default function SidebarFolders({
                       }),
                     );
                   }}
-                  className="bg-transparent text-muted-foreground focus:outline-none"
+                  className="w-[20px] flex-1 bg-transparent text-muted-foreground focus:outline-none"
                   placeholder="New Folder"
                 />
               </span>

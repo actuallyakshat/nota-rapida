@@ -22,14 +22,17 @@ export default async function layout({
         where: {
           trashed: false,
         },
+        orderBy: {
+          order: "asc",
+        },
         select: {
           id: true,
           title: true,
         },
-        orderBy: {
-          order: "asc",
-        },
       },
+    },
+    orderBy: {
+      order: "asc",
     },
   });
 
