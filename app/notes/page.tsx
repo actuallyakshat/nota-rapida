@@ -15,7 +15,7 @@ export default async function Search() {
       },
     },
     orderBy: {
-      updatedAt: "desc",
+      order: "asc",
     },
     include: {
       folder: true,

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   ArrowUpDown,
   CirclePlus,
@@ -23,6 +23,10 @@ export default function SidebarOptions({
   setAddingFolder: (arg0: boolean) => void;
 }) {
   const { selectedFolder } = useGlobalContext();
+  const [error, setError] = React.useState<string>("");
+  useEffect(() => {
+    setError("");
+  }, [selectedFolder]);
   const sidebarOption = [
     {
       id: 1,
@@ -38,7 +42,7 @@ export default function SidebarOptions({
       type: "button",
       method: () => {
         if (!selectedFolder) {
-          console.log("No folder selected");
+          setError("No Folder Selected");
           return;
         }
         setAddingNote(true);
@@ -51,15 +55,15 @@ export default function SidebarOptions({
       type: "button",
       method: () => setAddingFolder(true),
     },
+    // {
+    //   id: 4,
+    //   name: "Organise",
+    //   type: "link",
+    //   href: "/notes/organise",
+    //   icon: <ArrowUpDown className="size-5 stroke-muted-foreground" />,
+    // },
     {
       id: 4,
-      name: "Organise",
-      type: "link",
-      href: "/notes/organise",
-      icon: <ArrowUpDown className="size-5 stroke-muted-foreground" />,
-    },
-    {
-      id: 5,
       name: "Trash",
       href: "/notes/trash",
       icon: <Trash className="size-5 stroke-muted-foreground" />,
@@ -76,6 +80,9 @@ export default function SidebarOptions({
           >
             {option.icon}
             <p className="text-sm text-muted-foreground">{option.name}</p>
+            {option.name == "Add Note" && error && (
+              <span className="text-xs text-red-500">{error}</span>
+            )}
           </button>
         ) : (
           <Link

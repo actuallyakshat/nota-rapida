@@ -8,10 +8,11 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import Link from "next/link";
-import { Folder } from "lucide-react";
+import { Folder, Pencil } from "lucide-react";
 import { addNote, createFolder } from "@/app/notes/_actions/actions";
 import DeleteFolder from "./DeleteFolder";
 import { useRouter } from "next/navigation";
+import FolderItem from "./FolderTitle";
 
 export default function SidebarFolders({
   userDetails,
@@ -81,7 +82,7 @@ export default function SidebarFolders({
           {allFolders.map((folder) => (
             <Accordion key={folder.id} type="single" collapsible>
               <AccordionItem value={folder.id} className="border-0">
-                <AccordionTrigger
+                {/* <AccordionTrigger
                   className="text-muted-foreground"
                   onClick={() => {
                     setAddingNote(false);
@@ -95,13 +96,27 @@ export default function SidebarFolders({
                   }}
                 >
                   <span>{folder.name}</span>
-                  <div onClick={(e) => e.preventDefault()} className="ml-auto">
+                  <div
+                    onClick={(e) => e.preventDefault()}
+                    className="ml-auto flex items-center gap-2"
+                  >
+                    <button>
+                      <Pencil className="size-4 fill-muted-foreground stroke-none transition-colors hover:fill-foreground" />
+                    </button>
                     <DeleteFolder
                       folderId={folder.id}
                       setSelectedFolder={setSelectedFolder}
                     />
                   </div>
-                </AccordionTrigger>
+                </AccordionTrigger> */}
+                <FolderItem
+                  folder={folder}
+                  selectedFolder={selectedFolder}
+                  setSelectedFolder={setSelectedFolder}
+                  setAddingNote={setAddingNote}
+                  setNewNoteName={setNewNoteName}
+                />
+
                 <AccordionContent className="mt-1 flex flex-col items-start justify-start gap-2">
                   {folder.notes.map((note) => (
                     <Link

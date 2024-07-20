@@ -222,3 +222,24 @@ export async function deleteFolder(folderId: string) {
     return { success: false, data: null, error: e.message };
   }
 }
+
+export async function renameFolder(folderId: string, name: string) {
+  try {
+    if (!folderId || !name) {
+      return { success: false, data: null, error: "Missing required fields" };
+    }
+    const folder = await prisma.folder.update({
+      where: {
+        id: folderId,
+      },
+      data: {
+        name: name,
+      },
+    });
+    revalidatePath("/notes");
+    return { success: true, data: folder, error: null };
+  } catch (e: any) {
+    console.log(e);
+    return { success: false, data: null, error: e.message };
+  }
+}
