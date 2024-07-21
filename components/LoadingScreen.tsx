@@ -3,7 +3,7 @@ import React from "react";
 
 export default function LoadingScreen() {
   return (
-    <div className="flex h-screen w-full items-center justify-center">
+    <div className="flex h-[100dvh] w-full items-center justify-center">
       <Loader className="size-10 animate-spin" />
     </div>
   );

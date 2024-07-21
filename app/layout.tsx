@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={`${inter.className} h-full min-h-screen`}>
+        <body className={`${inter.className} h-full min-h-[100dvh]`}>
           <GlobalProvider>
             <ThemeProvider
               attribute="class"

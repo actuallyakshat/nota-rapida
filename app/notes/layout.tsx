@@ -38,7 +38,7 @@ export default async function layout({
 
   return (
     <div className="p-4">
-      <main className="relative my-auto h-[calc(100vh-2rem)] w-full overflow-hidden rounded-3xl bg-windowBackground shadow-lg">
+      <main className="relative my-auto h-[calc(100dvh-2rem)] w-full overflow-hidden rounded-3xl bg-windowBackground shadow-lg">
         <TopBar />
         <div className="flex h-full">
           <SideBar allFolders={folders} />
