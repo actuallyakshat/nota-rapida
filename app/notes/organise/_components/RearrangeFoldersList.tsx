@@ -2,8 +2,8 @@
 import { Folder } from "@prisma/client";
 import React, { useState } from "react";
 import { Reorder } from "framer-motion";
-import debounce from "lodash.debounce";
 import { FolderIcon } from "lucide-react";
+import { debounce } from "lodash";
 
 // Debounced function to handle order update
 const debouncedUpdateOrder = debounce((newOrder) => {
