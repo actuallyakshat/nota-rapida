@@ -47,23 +47,23 @@ export default async function Trash() {
   }
 
   return (
-    <div className="w-full p-12">
+    <div className="noscrollbar flex h-full w-full flex-col gap-2 overflow-y-auto p-12">
       <h1 className="text-3xl font-black">Trash</h1>
       <p className="text-sm text-muted-foreground">
         Notes that you have moved to the trash.
       </p>
       <hr className="mb-3 mt-2" />
       <h2 className="mt-4 text-2xl font-bold">Notes</h2>
-      <div className="mt-2 grid grid-cols-1 gap-3 md:grid-cols-3">
+      <div className="mt-2 flex flex-col gap-2">
         {trashedNotes.map((note) => (
           <div
             key={note.id}
-            className="mt-1 flex items-center justify-between gap-4 rounded-lg border px-6 py-3 shadow-md"
+            className="mt-1 flex items-center justify-between gap-4"
           >
             <div className="flex w-full items-center justify-between gap-2">
               <div>
                 <div className="flex items-center gap-2">
-                  <h2 className="text-xl font-bold">{note.title}</h2>
+                  <h2 className="text-base font-semibold">{note.title}</h2>
                   <p className="text-xs text-muted-foreground">
                     {getDaysRemaining(note.trashedDate as Date)} days left
                   </p>
@@ -89,16 +89,16 @@ export default async function Trash() {
         )}
       </div>
       <h2 className="mt-8 text-2xl font-bold">Folders</h2>
-      <div className="mt-2 grid grid-cols-1 gap-3 md:grid-cols-3">
+      <div className="mt-2 flex h-full flex-1 flex-col gap-2 pb-5">
         {trashedFolders.map((folder) => (
           <div
             key={folder.id}
-            className="mt-2 flex items-center justify-between gap-4 rounded-lg border px-6 py-3 shadow-md"
+            className="mt-2 flex items-center justify-between gap-4"
           >
             <div className="flex w-full items-center justify-between gap-2">
               <div>
                 <div className="flex items-center gap-2">
-                  <h2 className="text-xl font-bold">{folder.name}</h2>
+                  <h2 className="font-semibold">{folder.name}</h2>
                   <p className="text-xs text-muted-foreground">
                     {getDaysRemaining(folder.trashedDate as Date)} days left
                   </p>

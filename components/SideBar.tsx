@@ -1,10 +1,11 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 
-import { SquareChevronLeft } from "lucide-react";
+import { Menu, SquareChevronLeft, X } from "lucide-react";
 import { useGlobalContext } from "@/providers/global-context";
 import SidebarFolders from "./SidebarFolders";
 import { FolderWithNotes } from "@/types/User";
+import { SidebarOptionsMobile } from "./SidebarOptions";
 
 export default function SideBar({
   allFolders,
@@ -18,7 +19,7 @@ export default function SideBar({
 
   return (
     <>
-      <MobileSideBar />
+      <MobileSideBar allFolders={allFolders} />
       <div
         className={`hidden lg:block ${
           collpased ? "w-[50px]" : "flex-[1]"
@@ -52,24 +53,48 @@ export default function SideBar({
   );
 }
 
-function MobileSideBar() {
+function MobileSideBar({ allFolders }: { allFolders: FolderWithNotes[] }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [addingNote, setAddingNote] = useState(false);
+  const [addingFolder, setAddingFolder] = useState(false);
+  const { selectedFolder, setSelectedFolder, clientUser } = useGlobalContext();
+
   return (
     <>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="absolute left-4 top-16 lg:hidden"
+        className="absolute left-5 top-3 text-foreground lg:hidden"
       >
-        Open
+        {isOpen ? (
+          <X className="size-6 text-white" />
+        ) : (
+          <Menu className="size-6 text-white" />
+        )}
       </button>
 
+      {isOpen && (
+        <div
+          className="absolute z-[99] h-full w-full lg:hidden"
+          onClick={() => setIsOpen(false)}
+        ></div>
+      )}
+
       <div
-        onClick={() => setIsOpen(false)}
         className={`${
-          isOpen ? "translate-x-0" : "-translate-x-[100%]"
-        } absolute left-0 h-full w-3/4 border-r border-zinc-300 bg-windowBackground transition-all duration-300`}
+          isOpen ? "translate-x-0 border-r" : "-translate-x-[100%] border-0"
+        } absolute left-0 z-[100] h-full w-3/4 bg-windowBackground py-5 transition-all duration-300 lg:hidden`}
       >
-        hey
+        <SidebarFolders
+          addingFolder={addingFolder}
+          setAddingFolder={setAddingFolder}
+          addingNote={addingNote}
+          setAddingNote={setAddingNote}
+          allFolders={allFolders}
+          selectedFolder={selectedFolder}
+          setSelectedFolder={setSelectedFolder}
+          userDetails={clientUser}
+          setIsOpen={setIsOpen}
+        />
       </div>
     </>
   );

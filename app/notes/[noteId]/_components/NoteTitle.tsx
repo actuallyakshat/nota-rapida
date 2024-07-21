@@ -87,17 +87,19 @@ export default function NoteTitle({ note }: { note: Note }) {
           }}
           className="w-full"
         >
-          <div className="flex w-full items-center">
+          <div className="flex w-full items-center justify-between">
             <input
               disabled={!enableEdit}
               defaultValue={note.title}
               ref={ref}
               onChange={(e) => setNewTitle(e.target.value)}
+              size={1}
               style={{
                 lineHeight: "1.1",
                 height: "auto",
+                minWidth: "0",
               }}
-              className="max-h-full w-full bg-transparent text-2xl font-bold focus:outline-none"
+              className="max-h-full flex-[1] bg-transparent text-2xl font-bold focus:outline-none lg:w-full"
             />
             <div className="flex items-center gap-2">
               <button

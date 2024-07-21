@@ -93,3 +93,9 @@
 .bn-side-menu {
   padding-right: 8px !important;
 }
+
+@media (max-width: 1024px) {
+  .bn-side-menu {
+    display: none !important;
+  }
+}

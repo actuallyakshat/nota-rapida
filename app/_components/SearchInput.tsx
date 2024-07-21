@@ -35,7 +35,7 @@ export default function SearchInput({
         type="text"
         placeholder="Search notes..."
         onChange={(e) => setQuery(e.target.value)}
-        className="mt-3 w-full max-w-md rounded-md bg-background px-3 py-3 text-sm font-medium text-foreground shadow-sm focus:outline-none dark:bg-[#262626]"
+        className="mt-3 w-full max-w-md rounded-md bg-[#fcfdff] px-3 py-3 text-sm font-medium text-foreground shadow-sm focus:outline-none dark:bg-[#262626]"
       />
       {filteredNotes.length > 0 && (
         <div className="mt-5">

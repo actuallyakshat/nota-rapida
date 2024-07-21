@@ -28,6 +28,7 @@ export default function SidebarFolders({
   selectedFolder,
   setSelectedFolder,
   allFolders,
+  setIsOpen,
 }: {
   userDetails: UserDetails | null;
   addingNote: boolean;
@@ -37,6 +38,7 @@ export default function SidebarFolders({
   selectedFolder: string;
   setSelectedFolder: (arg0: string) => void;
   allFolders: FolderWithNotes[];
+  setIsOpen?: (arg0: boolean) => void;
 }) {
   const newNoteRef = useRef<HTMLInputElement>(null);
   const newFolderRef = useRef<HTMLInputElement>(null);
@@ -182,6 +184,9 @@ export default function SidebarFolders({
                               <Link
                                 href={`/notes/${note.id}`}
                                 key={note.id}
+                                onClick={() => {
+                                  setIsOpen && setIsOpen(false);
+                                }}
                                 className="text-sm text-muted-foreground transition-colors hover:text-foreground hover:underline"
                               >
                                 {note.title}

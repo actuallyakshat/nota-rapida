@@ -33,7 +33,7 @@ export default async function Note({ params }: { params: { noteId: string } }) {
 
   if (note.trashed) {
     return (
-      <div className="px-16 py-12">
+      <div className="p-4 lg:px-16 lg:py-12">
         <h1 className="text-3xl font-black">Note trashed</h1>
         <p className="text-sm text-muted-foreground">
           This note has been moved to the trash bin and will be deleted in{" "}
@@ -46,7 +46,7 @@ export default async function Note({ params }: { params: { noteId: string } }) {
 
   return (
     <div className="w-full">
-      <div className="w-full px-16 py-12">
+      <div className="w-full px-6 py-10 lg:px-16 lg:py-12">
         <NoteTitle note={note} />
         <hr className="mt-4" />
         <TextEditor note={note} />
