@@ -26,6 +26,7 @@ export default async function Trash() {
 
   const trashedFolders = await prisma.folder.findMany({
     where: {
+      userId: user?.id,
       trashed: true,
     },
     orderBy: {
@@ -89,7 +90,7 @@ export default async function Trash() {
         )}
       </div>
       <h2 className="mt-8 text-2xl font-bold">Folders</h2>
-      <div className="mt-2 flex h-full flex-1 flex-col gap-2 pb-5">
+      <div className="mt-2 flex h-full flex-1 flex-col gap-2 pb-8">
         {trashedFolders.map((folder) => (
           <div
             key={folder.id}
