@@ -107,7 +107,7 @@ export default function FolderItem({
               <Pencil className="size-4 fill-muted-foreground stroke-none transition-colors hover:fill-foreground" />
             </button>
             <DeleteFolder
-              folderId={folder.id}
+              folder={folder}
               setSelectedFolder={setSelectedFolder}
             />
           </>

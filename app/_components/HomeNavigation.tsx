@@ -4,7 +4,6 @@ import {
   SignInButton,
   SignOutButton,
 } from "@clerk/nextjs";
-import { LogIn, LogOut, Notebook } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -15,7 +14,7 @@ export default function HomeNavigation() {
       <div className="flex h-full w-full max-w-2xl items-center justify-between rounded-xl bg-windowBackground pl-4 pr-6 shadow-lg">
         <Link
           href="/"
-          className="flex items-center gap-2 text-base font-extrabold"
+          className="flex items-center gap-4 text-base font-extrabold"
         >
           <Image
             src="/icon.png"
@@ -27,7 +26,7 @@ export default function HomeNavigation() {
           <span>Nota Rapida</span>
         </Link>
         <SignedIn>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-4">
             <Link href="/notes" className="text-sm font-medium hover:underline">
               Notes
             </Link>

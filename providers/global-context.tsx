@@ -2,7 +2,7 @@
 import { getUserDetails } from "@/app/_actions/actions";
 import LoadingScreen from "@/components/LoadingScreen";
 import UserDetails from "@/types/User";
-import { useClerk } from "@clerk/nextjs";
+import { useAuth, useClerk } from "@clerk/nextjs";
 import { Folder, User } from "@prisma/client";
 import React, { useContext, useEffect } from "react";
 
@@ -22,6 +22,7 @@ const GlobalContext = React.createContext<{
 
 const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
   const { user } = useClerk();
+  const { isSignedIn } = useAuth();
   const [clientUser, setClientUser] = React.useState<UserDetails | null>(null);
   const [isLoading, setIsLoading] = React.useState(true);
   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
@@ -53,10 +54,14 @@ const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
     authHandler();
   }, [user]);
 
+  useEffect(() => {
+    if (!isSignedIn) {
+      setIsAuthenticated(false);
+    }
+  }, [isSignedIn]);
+
   if (isLoading) {
-    return (
-      <LoadingScreen />
-    );
+    return <LoadingScreen />;
   }
 
   return (

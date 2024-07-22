@@ -1,21 +1,27 @@
-"use client";
 import { Button } from "@/components/ui/button";
 import { useGlobalContext } from "@/providers/global-context";
-import { GithubIcon } from "lucide-react";
+import { SignedIn, SignedOut } from "@clerk/nextjs";
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 import React from "react";
 
 export default function LandingButtons() {
-  const { isAuthenticated } = useGlobalContext();
   return (
     <div className="mx-auto flex w-fit items-center gap-4 bg-transparent">
-      {isAuthenticated ? (
-        <Button size={"lg"}>Notes</Button>
-      ) : (
-        <Button>Get Started</Button>
-      )}
-      <Button size={"lg"} className="flex items-center gap-2">
-        GitHub <GithubIcon />
-      </Button>
+      <SignedIn>
+        <Link href={"/notes"}>
+          <Button className="flex items-center gap-2 p-6">
+            Notes <ArrowRight className="size-5 stroke-2" />
+          </Button>
+        </Link>
+      </SignedIn>
+      <SignedOut>
+        <Link href="/sign-in">
+          <Button className="flex items-center gap-2 p-6">
+            Get Started <ArrowRight className="size-5 stroke-2" />
+          </Button>
+        </Link>
+      </SignedOut>
     </div>
   );
 }

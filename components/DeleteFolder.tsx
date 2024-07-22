@@ -13,25 +13,33 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Trash } from "lucide-react";
 import { trashFolder } from "@/app/notes/_actions/actions";
+import { usePathname, useRouter } from "next/navigation";
+import { FolderWithNotes } from "@/types/User";
 
 export default function DeleteFolder({
-  folderId,
+  folder,
   setSelectedFolder,
 }: {
-  folderId: string;
+  folder: FolderWithNotes;
   setSelectedFolder: Function;
 }) {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("");
+  const pathname = usePathname();
+  const router = useRouter();
+  const notesInsideFolder = folder.notes.map((note) => note.id);
   async function deleteFolderHandler() {
     try {
       setLoading(true);
-      const response = await trashFolder(folderId, new Date());
+      const response = await trashFolder(folder.id, new Date());
       if (response.success) {
+        if (notesInsideFolder.includes(pathname.split("/")[2])) {
+        }
         setSelectedFolder("");
         console.log("Folder deleted");
         setOpen(false);
+        router.push("/notes");
       } else {
         console.log(response.error);
       }
