@@ -8,6 +8,10 @@ import {
   restoreFolder,
   restoreNote,
 } from "../_actions/actions";
+import {
+  DeleteAllFoldersButton,
+  DeleteAllNotesButton,
+} from "./_components/DeleteAll";
 
 export default async function Trash() {
   const user = await currentUser();
@@ -48,13 +52,16 @@ export default async function Trash() {
   }
 
   return (
-    <div className="noscrollbar flex h-full w-full flex-col gap-2 overflow-y-auto p-12">
+    <div className="noscrollbar flex h-full w-full flex-col gap-2 overflow-y-auto px-5 pb-10 pt-8 lg:p-12">
       <h1 className="text-3xl font-black">Trash</h1>
       <p className="text-sm text-muted-foreground">
-        Notes that you have moved to the trash.
+        Notes and Folders that are placed in your trash.
       </p>
       <hr className="mb-3 mt-2" />
-      <h2 className="mt-4 text-2xl font-bold">Notes</h2>
+      <div className="mt-2 flex w-full items-center justify-between">
+        <h2 className="text-2xl font-bold">Notes</h2>
+        <DeleteAllNotesButton />
+      </div>
       <div className="mt-2 flex flex-col gap-2">
         {trashedNotes.map((note) => (
           <div
@@ -89,7 +96,11 @@ export default async function Trash() {
           </p>
         )}
       </div>
-      <h2 className="mt-8 text-2xl font-bold">Folders</h2>
+      <div className="mt-4 flex w-full items-center justify-between">
+        <h2 className="text-2xl font-bold">Folders</h2>
+        <DeleteAllFoldersButton />
+      </div>
+
       <div className="mt-2 flex h-full flex-1 flex-col gap-2 pb-8">
         {trashedFolders.map((folder) => (
           <div

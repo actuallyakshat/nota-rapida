@@ -338,3 +338,42 @@ export async function updateFolderOrder(reorderedFolders: Folder[]) {
     return { success: false, data: null, error: error.message };
   }
 }
+
+export async function deleteAllTrashedFolders(id: string) {
+  try {
+    if (!id) {
+      return { success: false, data: null, error: "Missing required fields" };
+    }
+    const folder = await prisma.folder.deleteMany({
+      where: {
+        userId: id,
+        trashed: true,
+      },
+    });
+    console.log("deleted", folder);
+    revalidatePath("/notes/trash");
+    return { success: true, data: folder, error: null };
+  } catch (e: any) {
+    console.log(e);
+    return { success: false, data: null, error: e.message };
+  }
+}
+
+export async function deleteAllTrashedNotes(id: string) {
+  try {
+    if (!id) {
+      return { success: false, data: null, error: "Missing required fields" };
+    }
+    const note = await prisma.note.deleteMany({
+      where: {
+        userId: id,
+        trashed: true,
+      },
+    });
+    revalidatePath("/notes/trash");
+    return { success: true, data: note, error: null };
+  } catch (e: any) {
+    console.log(e);
+    return { success: false, data: null, error: e.message };
+  }
+}

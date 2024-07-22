@@ -10,17 +10,20 @@ import {
 import ThemeToggler from "./ThemeToggler";
 import { useGlobalContext } from "@/providers/global-context";
 import Link from "next/link";
+import { method } from "lodash";
 
 export default function SidebarOptions({
   addingNote,
   setAddingNote,
   addingFolder,
   setAddingFolder,
+  setIsOpen,
 }: {
   addingNote: boolean;
   setAddingNote: (arg0: boolean) => void;
   addingFolder: boolean;
   setAddingFolder: (arg0: boolean) => void;
+  setIsOpen?: (arg0: boolean) => void;
 }) {
   const { selectedFolder } = useGlobalContext();
   const [error, setError] = React.useState<string>("");
@@ -34,6 +37,7 @@ export default function SidebarOptions({
       icon: <Search className="size-5 stroke-muted-foreground" />,
       type: "link",
       href: "/notes",
+      method: () => setIsOpen && setIsOpen(false),
     },
     {
       id: 2,
@@ -59,6 +63,7 @@ export default function SidebarOptions({
       id: 4,
       name: "Trash",
       href: "/notes/trash",
+      method: () => setIsOpen && setIsOpen(false),
       icon: <Trash className="size-5 stroke-muted-foreground" />,
     },
   ];
@@ -81,6 +86,7 @@ export default function SidebarOptions({
           <Link
             key={option.id}
             href={option.href as string}
+            onClick={option.method}
             className="flex w-full items-center gap-3 px-4 py-2 transition-colors hover:bg-hover"
           >
             {option.icon}

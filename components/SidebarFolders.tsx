@@ -139,6 +139,7 @@ export default function SidebarFolders({
         setAddingNote={setAddingNote}
         addingFolder={addingFolder}
         setAddingFolder={setAddingFolder}
+        setIsOpen={setIsOpen}
       />
       <hr className="mt-4" />
 

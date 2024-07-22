@@ -24,7 +24,7 @@ export default async function Search() {
   console.log(allNotes);
   const recent = allNotes.slice(0, 7);
   return (
-    <div className="w-full p-12">
+    <div className="w-full px-5 pb-10 pt-8 lg:p-12">
       {recent.length > 0 && <RecentNotes notes={recent} />}
       <SearchInput allNotes={allNotes} />
     </div>
