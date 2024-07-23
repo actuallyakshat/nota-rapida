@@ -1,5 +1,6 @@
 "use server";
 import prisma from "@/db";
+import { NoteWithFolder } from "@/types/User";
 import { Folder, Note } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
@@ -144,14 +145,33 @@ export async function saveNote(noteId: string, content: string) {
   }
 }
 
-export async function restoreNote(noteId: string) {
+export async function restoreNote(note: NoteWithFolder) {
   try {
-    if (!noteId) {
+    if (!note) {
       return { success: false, data: null, error: "Missing required fields" };
     }
-    const note = await prisma.note.update({
+
+    const parentFolder = await prisma.folder.findUnique({
       where: {
-        id: noteId,
+        id: note.folderId,
+      },
+    });
+
+    if (!parentFolder) {
+      return { success: false, data: null, error: "Parent folder not found" };
+    }
+
+    if (parentFolder.trashed) {
+      return {
+        success: false,
+        data: null,
+        error: "Parent folder is trashed. Restore the parent folder first.",
+      };
+    }
+
+    const newNote = await prisma.note.update({
+      where: {
+        id: note.id,
       },
       data: {
         trashed: false,
@@ -159,7 +179,7 @@ export async function restoreNote(noteId: string) {
       },
     });
     revalidatePath("/notes");
-    return { success: true, data: note, error: null };
+    return { success: true, data: newNote, error: null };
   } catch (e: any) {
     console.log(e);
     return { success: false, data: null, error: e.message };

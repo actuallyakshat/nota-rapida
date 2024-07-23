@@ -25,6 +25,12 @@ const darkTheme = {
       background: "#141414",
       text: "#fff",
     },
+    menu: {
+      text: "#ffffff",
+      background: "#262626",
+    },
+    border: "#656565",
+    shadow: "#262626",
   },
 } satisfies Theme;
 

@@ -12,6 +12,7 @@ import {
   DeleteAllFoldersButton,
   DeleteAllNotesButton,
 } from "./_components/DeleteAll";
+import LoadingTrash from "./loading";
 
 export default async function Trash() {
   const user = await currentUser();
@@ -73,7 +74,12 @@ export default async function Trash() {
                 <div className="flex items-center gap-2">
                   <h2 className="text-base font-semibold">{note.title}</h2>
                   <p className="text-xs text-muted-foreground">
-                    {getDaysRemaining(note.trashedDate as Date)} days left
+                    {note.trashedDate
+                      ? getDaysRemaining(note.trashedDate as Date)
+                      : note.folder.trashedDate
+                        ? getDaysRemaining(note.folder.trashedDate as Date)
+                        : 0}{" "}
+                    days left
                   </p>
                 </div>
                 <p className="text-sm text-muted-foreground">

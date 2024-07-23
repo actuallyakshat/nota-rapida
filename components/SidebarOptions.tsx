@@ -11,6 +11,7 @@ import ThemeToggler from "./ThemeToggler";
 import { useGlobalContext } from "@/providers/global-context";
 import Link from "next/link";
 import { method } from "lodash";
+import { toast } from "sonner";
 
 export default function SidebarOptions({
   addingNote,
@@ -26,10 +27,6 @@ export default function SidebarOptions({
   setIsOpen?: (arg0: boolean) => void;
 }) {
   const { selectedFolder } = useGlobalContext();
-  const [error, setError] = React.useState<string>("");
-  useEffect(() => {
-    setError("");
-  }, [selectedFolder]);
   const sidebarOption = [
     {
       id: 1,
@@ -46,7 +43,7 @@ export default function SidebarOptions({
       type: "button",
       method: () => {
         if (!selectedFolder) {
-          setError("No Folder Selected");
+          toast.error("No Folder Selected");
           return;
         }
         setAddingNote(true);
@@ -78,9 +75,6 @@ export default function SidebarOptions({
           >
             {option.icon}
             <p className="text-sm text-muted-foreground">{option.name}</p>
-            {option.name == "Add Note" && error && (
-              <span className="text-xs text-red-500">{error}</span>
-            )}
           </button>
         ) : (
           <Link

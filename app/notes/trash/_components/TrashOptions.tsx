@@ -2,6 +2,7 @@
 import { NoteWithFolder, FolderWithNotes } from "@/types/User";
 import { Loader, Trash, Undo2 } from "lucide-react";
 import React from "react";
+import { toast } from "sonner";
 export default function TrashOptions({
   data,
   restoreMethod,
@@ -15,11 +16,13 @@ export default function TrashOptions({
   async function handleRestore() {
     try {
       setLoading(true);
-      const response = await restoreMethod(data.id);
+      const response = await restoreMethod(data);
       if (response.success) {
         console.log(response.data);
       } else {
         console.log(response.error);
+        toast.error(response.error);
+        setLoading(false);
       }
     } catch (error) {
       console.log(error);

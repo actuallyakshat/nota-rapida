@@ -4,6 +4,7 @@ import NoteTitle from "./_components/NoteTitle";
 import TextEditor from "@/components/TextEditor";
 import { currentUser } from "@clerk/nextjs/server";
 import { RedirectToSignIn } from "@clerk/nextjs";
+import LoadingNote from "./loading";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
