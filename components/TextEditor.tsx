@@ -17,41 +17,23 @@ import { saveNote } from "@/app/notes/_actions/actions";
 
 const lightTheme = {
   colors: {
+    ...lightDefaultTheme.colors, // Spread the existing colors
     editor: {
       background: "#f5f5f5",
       text: "#181a1b",
     },
-    menu: {
-      text: "#181a1b",
-      background: "#fff",
-    },
-    border: "#b3b4b7",
-    shadow: "#e5e7eb",
-    hovered: {
-      text: "#181a1b",
-      background: "#e7e5e4",
-    },
-    highlights: lightDefaultTheme.colors!.highlights,
+    highlights: lightDefaultTheme.colors?.highlights, // Ensure highlights are merged
   },
 } satisfies Theme;
 
 const darkTheme = {
   colors: {
+    ...darkDefaultTheme.colors, // Spread the existing colors
     editor: {
       background: "#141414",
       text: "#fff",
     },
-    menu: {
-      text: "#ffffff",
-      background: "#141414",
-    },
-    hovered: {
-      text: "#ffffff",
-      background: "#262626",
-    },
-    border: "#656565",
-    shadow: "#262626",
-    highlights: darkDefaultTheme.colors!.highlights,
+    highlights: darkDefaultTheme.colors?.highlights, // Ensure highlights are merged
   },
 } satisfies Theme;
 
