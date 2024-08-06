@@ -1,6 +1,6 @@
 "use server";
 import prisma from "@/db";
-import { NoteWithFolder } from "@/types/User";
+import { FolderWithNotes, NoteWithFolder } from "@/types/User";
 import { Folder, Note } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
@@ -204,22 +204,24 @@ export async function deleteNote(noteId: string) {
   }
 }
 
-export async function restoreFolder(folderId: string) {
+export async function restoreFolder(folder: FolderWithNotes) {
   try {
-    if (!folderId) {
+    if (!folder || !folder.id) {
       return { success: false, data: null, error: "Missing required fields" };
     }
-    const folder = await prisma.folder.update({
+
+    const updatedFolder = await prisma.folder.update({
       where: {
-        id: folderId,
+        id: folder.id,
       },
       data: {
         trashed: false,
         trashedDate: null,
       },
     });
+
     revalidatePath("/notes");
-    return { success: true, data: folder, error: null };
+    return { success: true, data: updatedFolder, error: null };
   } catch (e: any) {
     console.log(e);
     return { success: false, data: null, error: e.message };

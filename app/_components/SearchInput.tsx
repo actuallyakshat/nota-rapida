@@ -65,6 +65,11 @@ export default function SearchInput({
           No notes found.
         </div>
       )}
+      {query.length == 0 && (
+        <p className="mt-4 text-sm text-muted-foreground">
+          Your search results will appear here.
+        </p>
+      )}
     </div>
   );
 }
