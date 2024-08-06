@@ -65,23 +65,39 @@ export async function trashFolder(folderId: string, date: Date) {
     if (!folderId) {
       return { success: false, data: null, error: "Missing required fields" };
     }
-    const folder = await prisma.folder.update({
-      where: {
-        id: folderId,
-      },
-      data: {
-        trashed: true,
-        trashedDate: date,
-      },
+
+    const trashedFolder = await prisma.$transaction(async (prisma) => {
+      const folder = await prisma.folder.update({
+        where: {
+          id: folderId,
+        },
+        data: {
+          trashed: true,
+          trashedDate: date,
+        },
+      });
+
+      await prisma.note.updateMany({
+        where: {
+          folderId: folderId,
+        },
+        data: {
+          trashed: true,
+          trashedDate: date,
+        },
+      });
+
+      return folder;
     });
+
     revalidatePath("/notes");
-    return { success: true, data: folder, error: null };
+
+    return { success: true, data: trashedFolder, error: null };
   } catch (e: any) {
     console.log(e);
     return { success: false, data: null, error: e.message };
   }
 }
-
 export async function trashNote(noteId: string, date: Date) {
   try {
     if (!noteId) {
@@ -386,12 +402,25 @@ export async function deleteAllTrashedNotes(id: string) {
     if (!id) {
       return { success: false, data: null, error: "Missing required fields" };
     }
+
+    const notesToDelete = await prisma.note.findMany({
+      where: {
+        userId: id,
+        trashed: true,
+      },
+    });
+
+    console.log("notesToDelete", notesToDelete);
+
     const note = await prisma.note.deleteMany({
       where: {
         userId: id,
         trashed: true,
       },
     });
+
+    console.log("deleted", note);
+
     revalidatePath("/notes/trash");
     return { success: true, data: note, error: null };
   } catch (e: any) {

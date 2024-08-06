@@ -12,7 +12,6 @@ import {
   DeleteAllFoldersButton,
   DeleteAllNotesButton,
 } from "./_components/DeleteAll";
-import LoadingTrash from "./loading";
 
 export default async function Trash() {
   const user = await currentUser();
