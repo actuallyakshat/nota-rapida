@@ -1,8 +1,22 @@
 "use client";
+import React from "react";
 import { NoteWithFolder, FolderWithNotes } from "@/types/User";
 import { Loader, Trash, Undo2 } from "lucide-react";
-import React from "react";
+
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+
 import { toast } from "sonner";
+
 export default function TrashOptions({
   data,
   restoreMethod,
@@ -54,12 +68,53 @@ export default function TrashOptions({
 
   return (
     <div className="flex items-center gap-2">
-      <button disabled={loading} onClick={handleRestore}>
-        <Undo2 className="size-5" />
-      </button>
-      <button disabled={loading} onClick={handleDelete}>
-        <Trash className="size-5" />
-      </button>
+      {/* Restore  */}
+      <AlertDialog>
+        <AlertDialogTrigger>
+          <button disabled={loading}>
+            <Undo2 className="size-5" />
+          </button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              You are about to restore this item.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleRestore}>
+              Restore
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Delete  */}
+
+      <AlertDialog>
+        <AlertDialogTrigger>
+          <button disabled={loading}>
+            <Trash className="size-5" />
+          </button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              You are about to permanently delete this item. This action cannot
+              be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete}>
+              Continue
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
