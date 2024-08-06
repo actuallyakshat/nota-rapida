@@ -70,7 +70,6 @@ export default function NoteTitle({ note }: { note: Note }) {
         <form
           onSubmit={async (e) => {
             e.preventDefault();
-            console.log("submitted");
             setEnableEdit(false);
             if (newTitle == note.title) return;
             if (newTitle.trim() == "") {

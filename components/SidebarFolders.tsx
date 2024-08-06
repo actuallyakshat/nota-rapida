@@ -75,7 +75,6 @@ export default function SidebarFolders({
   const handleNoteReorder = async (folderId: string, reorderedNotes: any[]) => {
     try {
       setLoading(true);
-      console.log("reached till here");
       const response = await updateNoteOrder(folderId, reorderedNotes);
       if (response.success) {
         console.log("Note order updated successfully.");

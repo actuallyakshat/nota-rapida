@@ -1,7 +1,12 @@
 "use client";
 import "@blocknote/core/fonts/inter.css";
 import { useCreateBlockNote } from "@blocknote/react";
-import { BlockNoteView, Theme } from "@blocknote/mantine";
+import {
+  BlockNoteView,
+  darkDefaultTheme,
+  lightDefaultTheme,
+  Theme,
+} from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
 import { useTheme } from "next-themes";
 import { Block, BlockNoteEditor, PartialBlock } from "@blocknote/core";
@@ -16,6 +21,17 @@ const lightTheme = {
       background: "#f5f5f5",
       text: "#181a1b",
     },
+    menu: {
+      text: "#181a1b",
+      background: "#fff",
+    },
+    border: "#b3b4b7",
+    shadow: "#e5e7eb",
+    hovered: {
+      text: "#181a1b",
+      background: "#e7e5e4",
+    },
+    highlights: lightDefaultTheme.colors!.highlights,
   },
 } satisfies Theme;
 
@@ -31,6 +47,7 @@ const darkTheme = {
     },
     border: "#656565",
     shadow: "#262626",
+    highlights: darkDefaultTheme.colors!.highlights,
   },
 } satisfies Theme;
 

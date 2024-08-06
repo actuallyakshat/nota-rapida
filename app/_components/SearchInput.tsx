@@ -22,7 +22,6 @@ export default function SearchInput({
         note.content.toLowerCase().includes(query.toLowerCase()) ||
         note.folder.name.toLowerCase().includes(query.toLowerCase()),
     );
-    console.log(filteredNotes);
     setFilteredNotes(filteredNotes);
   }, [query, allNotes]);
   return (

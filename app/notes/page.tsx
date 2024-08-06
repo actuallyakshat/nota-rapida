@@ -22,7 +22,6 @@ export default async function Search() {
       folder: true,
     },
   });
-  console.log(allNotes);
   const recent = allNotes.slice(0, 7);
 
   return (
