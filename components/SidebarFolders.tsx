@@ -153,13 +153,14 @@ export default function SidebarFolders({
               Create a folder to get started.
             </p>
           )}
-          <Reorder.Group
-            axis="y"
-            values={folders}
-            onReorder={handleLocalFolderReorder}
-          >
-            {folders.map((folder) => (
-              <Accordion key={folder.id} type="single" collapsible>
+
+          <Accordion type="single" collapsible>
+            <Reorder.Group
+              axis="y"
+              values={folders}
+              onReorder={handleLocalFolderReorder}
+            >
+              {folders.map((folder) => (
                 <Reorder.Item key={folder.id} value={folder}>
                   <AccordionItem value={folder.id} className="border-0">
                     <FolderItem
@@ -261,7 +262,7 @@ export default function SidebarFolders({
                                 }),
                               );
                             }}
-                            className="bg-windowBackground text-sm text-muted-foreground focus:outline-none"
+                            className="mt-2 bg-windowBackground text-sm text-muted-foreground focus:outline-none"
                             placeholder="New Note"
                           />
                         </form>
@@ -269,9 +270,9 @@ export default function SidebarFolders({
                     </AccordionContent>
                   </AccordionItem>
                 </Reorder.Item>
-              </Accordion>
-            ))}
-          </Reorder.Group>
+              ))}
+            </Reorder.Group>
+          </Accordion>
 
           {addingFolder && (
             <form
