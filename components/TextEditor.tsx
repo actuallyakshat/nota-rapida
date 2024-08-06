@@ -43,6 +43,10 @@ const darkTheme = {
     },
     menu: {
       text: "#ffffff",
+      background: "#141414",
+    },
+    hovered: {
+      text: "#ffffff",
       background: "#262626",
     },
     border: "#656565",
