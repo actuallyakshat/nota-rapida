@@ -98,7 +98,7 @@ export default function NoteTitle({ note }: { note: Note }) {
                 height: "auto",
                 minWidth: "0",
               }}
-              className="max-h-full flex-[1] bg-transparent text-2xl font-bold focus:outline-none lg:w-full"
+              className="max-h-full flex-[1] bg-transparent text-2xl font-bold focus:outline-none disabled:text-foreground lg:w-full"
             />
             <div className="flex items-center gap-2">
               <button
