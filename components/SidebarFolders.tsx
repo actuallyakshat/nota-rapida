@@ -7,7 +7,7 @@ import {
   AccordionItem,
 } from "@/components/ui/accordion";
 import Link from "next/link";
-import { Folder, GripVertical } from "lucide-react";
+import { Folder, GripVertical, Loader } from "lucide-react";
 import {
   addNote,
   createFolder,
@@ -245,25 +245,32 @@ export default function SidebarFolders({
                             }
                           }}
                         >
-                          <input
-                            type="text"
-                            value={newNoteName}
-                            ref={newNoteRef}
-                            disabled={loading}
-                            maxLength={30}
-                            onChange={(e) => setNewNoteName(e.target.value)}
-                            onBlur={(e) => {
-                              e.preventDefault();
-                              e.target.form!.dispatchEvent(
-                                new Event("submit", {
-                                  cancelable: true,
-                                  bubbles: true,
-                                }),
-                              );
-                            }}
-                            className="mt-2 bg-windowBackground text-sm text-muted-foreground focus:outline-none"
-                            placeholder="New Note"
-                          />
+                          <div className="flex items-center justify-between gap-2">
+                            <input
+                              type="text"
+                              value={newNoteName}
+                              ref={newNoteRef}
+                              disabled={loading}
+                              maxLength={30}
+                              onChange={(e) => setNewNoteName(e.target.value)}
+                              onBlur={(e) => {
+                                e.preventDefault();
+                                e.target.form!.dispatchEvent(
+                                  new Event("submit", {
+                                    cancelable: true,
+                                    bubbles: true,
+                                  }),
+                                );
+                              }}
+                              className="mt-2 bg-windowBackground text-sm text-muted-foreground placeholder:text-muted-foreground focus:outline-none"
+                              placeholder="New Note"
+                            />
+                            {loading && (
+                              <div className="flex items-center justify-start gap-2 pr-5">
+                                <Loader className="h-4 w-4 animate-spin" />
+                              </div>
+                            )}
+                          </div>
                         </form>
                       )}
                     </AccordionContent>
@@ -307,26 +314,33 @@ export default function SidebarFolders({
                 }
               }}
             >
-              <span className="flex items-center gap-2 px-4 py-2">
-                <Folder fill="#737373" stroke="none" className="size-4" />
-                <input
-                  type="text"
-                  ref={newFolderRef}
-                  disabled={loading}
-                  onChange={(e) => setNewFolderName(e.target.value)}
-                  maxLength={30}
-                  onBlur={(e) => {
-                    e.preventDefault();
-                    e.target.form!.dispatchEvent(
-                      new Event("submit", {
-                        cancelable: true,
-                        bubbles: true,
-                      }),
-                    );
-                  }}
-                  className="w-[20px] flex-1 bg-transparent text-muted-foreground focus:outline-none"
-                  placeholder="New Folder"
-                />
+              <span className="flex items-center justify-between gap-2 px-4 py-2">
+                <div className="flex flex-1 items-center gap-2">
+                  <Folder fill="#737373" stroke="none" className="size-4" />
+                  <input
+                    type="text"
+                    ref={newFolderRef}
+                    disabled={loading}
+                    onChange={(e) => setNewFolderName(e.target.value)}
+                    maxLength={30}
+                    onBlur={(e) => {
+                      e.preventDefault();
+                      e.target.form!.dispatchEvent(
+                        new Event("submit", {
+                          cancelable: true,
+                          bubbles: true,
+                        }),
+                      );
+                    }}
+                    className="w-[20px] flex-1 bg-transparent text-muted-foreground placeholder:text-muted-foreground focus:outline-none"
+                    placeholder="New Folder"
+                  />
+                </div>
+                {loading && (
+                  <div className="flex items-center gap-2">
+                    <Loader className="h-4 w-4 animate-spin" />
+                  </div>
+                )}
               </span>
             </form>
           )}
