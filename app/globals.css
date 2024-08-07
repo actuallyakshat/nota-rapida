@@ -84,6 +84,7 @@
 .noscrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
 }
 
 .bn-container .bn-editor {
