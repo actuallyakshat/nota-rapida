@@ -25,7 +25,7 @@ export default function SearchInput({
     setFilteredNotes(filteredNotes);
   }, [query, allNotes]);
   return (
-    <div className="mt-10">
+    <div>
       <h1 className="text-3xl font-black">Search Notes</h1>
       <p className="text-sm text-muted-foreground">
         Quickly search for your notes and jot your thoughts down.

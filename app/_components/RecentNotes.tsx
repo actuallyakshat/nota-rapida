@@ -6,7 +6,7 @@ import React from "react";
 
 export default function RecentNotes({ notes }: { notes: NoteWithFolder[] }) {
   return (
-    <div className="flex flex-col gap-1">
+    <div className="mb-10 flex flex-col gap-1">
       <div>
         <h1 className="text-3xl font-black">Recent Notes</h1>
         <p className="text-sm text-muted-foreground">
