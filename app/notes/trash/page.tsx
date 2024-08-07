@@ -60,7 +60,7 @@ export default async function Trash() {
       <hr className="mb-3 mt-2" />
       <div className="mt-2 flex w-full items-center justify-between">
         <h2 className="text-2xl font-bold">Notes</h2>
-        <DeleteAllNotesButton />
+        {trashedNotes.length > 0 && <DeleteAllNotesButton />}
       </div>
       <div className="mt-2 flex flex-col gap-2">
         {trashedNotes.map((note) => (
@@ -103,7 +103,7 @@ export default async function Trash() {
       </div>
       <div className="mt-4 flex w-full items-center justify-between">
         <h2 className="text-2xl font-bold">Folders</h2>
-        <DeleteAllFoldersButton />
+        {trashedFolders.length > 0 && <DeleteAllFoldersButton />}
       </div>
 
       <div className="mt-2 flex h-full flex-1 flex-col gap-2 pb-8">

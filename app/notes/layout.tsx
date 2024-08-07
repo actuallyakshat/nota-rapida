@@ -38,9 +38,9 @@ export default async function layout({
 
   return (
     <div className="p-4">
-      <main className="relative my-auto h-[calc(100dvh-2rem)] w-full overflow-hidden rounded-3xl bg-windowBackground shadow-lg">
+      <main className="noscrollbar relative my-auto flex h-[calc(100dvh-2rem)] w-full flex-col overflow-hidden overflow-y-auto rounded-3xl bg-windowBackground shadow-lg">
         <TopBar />
-        <div className="flex h-full">
+        <div className="flex flex-1">
           <SideBar allFolders={folders} />
           <div className="flex-[3]">{children}</div>
         </div>
