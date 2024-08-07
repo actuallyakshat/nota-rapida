@@ -74,7 +74,7 @@ function MobileSideBar({ allFolders }: { allFolders: FolderWithNotes[] }) {
 
       {isOpen && (
         <div
-          className="absolute z-[99] h-full w-full lg:hidden"
+          className="absolute z-[48] h-full w-full lg:hidden"
           onClick={() => setIsOpen(false)}
         ></div>
       )}
@@ -82,7 +82,7 @@ function MobileSideBar({ allFolders }: { allFolders: FolderWithNotes[] }) {
       <div
         className={`${
           isOpen ? "translate-x-0 border-r" : "-translate-x-[100%] border-0"
-        } absolute left-0 z-[100] h-full w-3/4 bg-windowBackground py-5 transition-all duration-300 lg:hidden`}
+        } absolute left-0 z-[49] h-full w-3/4 bg-windowBackground py-5 transition-all duration-300 lg:hidden`}
       >
         <SidebarFolders
           addingFolder={addingFolder}
