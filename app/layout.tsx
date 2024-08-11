@@ -10,6 +10,27 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Nota Rapida",
   description: "A simpe note taking app to help you organise your life.",
+  openGraph: {
+    images: [
+      {
+        url: "/landing.png",
+        width: 1200,
+        height: 630,
+        alt: "Nota Rapida",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: [
+      {
+        url: "/landing.png",
+        width: 1200,
+        height: 630,
+        alt: "Nota Rapida",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
